@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
+import ReviewModal from "./ReviewModal";
 
 function SignUpModal({ show, onHide, onSubmit }) {
   const [formState, setFormState] = useState({
@@ -14,6 +15,8 @@ function SignUpModal({ show, onHide, onSubmit }) {
     confirmPassword: "",
   });
 
+  const [showReviewModal, setShowReviewModal] = useState(false);
+
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.id]: e.target.value });
   };
@@ -24,9 +27,30 @@ function SignUpModal({ show, onHide, onSubmit }) {
 
   const handleSignUpSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formState);
-    onHide();
+    setShowReviewModal(true);
   };
+  
+  const resetFormState = () => {
+    setFormState({
+      name: "",
+      mobile: "",
+      email: "",
+      address: "",
+      addressType: "Permanent",
+      dob: "",
+      occupation: "",
+      password: "",
+      confirmPassword: "",
+    });
+  };
+  const handleFinalSubmit = () => {
+    onSubmit(formState); // Final form submission
+    setShowReviewModal(false); // Close the review modal
+    resetFormState();   // Reset the form state after submission
+    onHide(); // Close the sign-up modal
+  };
+
+  
 
   return (
     <>
@@ -184,6 +208,12 @@ function SignUpModal({ show, onHide, onSubmit }) {
           </form>
         </Modal.Body>
       </Modal>
+      <ReviewModal 
+        show={showReviewModal} 
+        onHide={() => setShowReviewModal(false)} 
+        formData={formState} 
+        finalSubmit={handleFinalSubmit} 
+      />
     </>
   );
 }

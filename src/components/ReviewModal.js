@@ -1,34 +1,32 @@
 import React from "react";
+import { Modal, Button } from "react-bootstrap";
 
-function ReviewModal({ formData, finalSubmit }) {
+
+function ReviewModal({ show, formData, onHide, finalSubmit }) {
+  const { showReviewModal, setShowReviewModal } = onHide;
   return (
-    <div className="modal fade show" style={{ display: "block" }}>
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">Review Your Details</h5>
-            <button
-              className="btn-close"
-              onClick={() =>
-                window.bootstrap.Modal.getInstance(
-                  document.querySelector("#reviewModal")
-                ).hide()
-              }
-            ></button>
-          </div>
-          <div className="modal-body">
-            <p>
-              <strong>Name:</strong> {formData.name}
-            </p>
-          </div>
-          <div className="modal-footer">
-            <button className="btn btn-primary" onClick={finalSubmit}>
-              Submit
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Modal show={showReviewModal || show}>
+      <Modal.Header closeButton>
+        <Modal.Title>Review Your Details</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p>
+          <strong>Name:</strong> {formData.name}
+        </p>
+        <p>
+          <strong>Email:</strong> {formData.email}
+        </p>
+        <p>
+          <strong>Mobile:</strong> {formData.mobile}
+        </p>
+        {/* Add more fields to display here */}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" onClick={finalSubmit}>
+          Submit
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
 
